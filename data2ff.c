@@ -33,7 +33,6 @@ convert(uint8_t b, uint16_t *buf)
 int
 main(void)
 {
-	uint32_t total, x, y;
 	uint16_t ffbuf[width * 4 * 8];
 	uint8_t dbuf[width];
 	long n, i;

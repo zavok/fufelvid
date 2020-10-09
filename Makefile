@@ -1,21 +1,37 @@
+.POSIX:
 
-.PHONY=all
+REQ = util
+BIN = png2ff ff2png data2ff ff2data
 
-all: data2ff ff2data ff2png png2ff
+CFLAGS = -std=c99 -pedantic -Wall -Wextra -Os
+CPPFLAGS = -D_DEFAULT_SOURCE
+LDFLAGS = -s
+CC = cc
 
-data2ff: data2ff.c
-	gcc data2ff.c -o data2ff
+PNG_LDLIBS = -lpng
 
-ff2data: ff2data.c
-	gcc ff2data.c -o ff2data
+all: $(BIN)
 
-ff2png:	ff2png.c util.c util.h
-	gcc -lpng ff2png.c util.c -o ff2png
+png2ff-LDLIBS = $(PNG_LDLIBS)
+ff2png-LDLIBS = $(PNG_LDLIBS)
 
-png2ff: png2ff.c util.c util.h
-	gcc -lpng png2ff.c util.c -o png2ff
+
+png2ff: png2ff.o $(REQ:=.o)
+ff2png: ff2png.o $(REQ:=.o)
+data2ff: data2ff.o
+ff2data: ff2data.o
+
+png2ff.o: png2ff.c $(REQ:=.h)
+ff2png.o: ff2png.c $(REQ:=.h)
+data2ff.o: data2ff.c
+ff2data.o: ff.data.c
+
+.o:
+	$(CC) -o $@ $(LDFLAGS) $< $(REQ:=.o) $($*-LDLIBS)
+
+.c.o:
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $<
 
 clean:
-	rm -rf data2ff ff2data ff2png png2ff *.o
-
+	rm -f $(BIN) $(BIN:=.o) $(REQ:=.o)
 
