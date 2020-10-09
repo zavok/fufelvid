@@ -4,22 +4,39 @@
 
 #include "util.h"
 
+uint8_t
+getbyte(uint64_t *p)
+{
+	uint8_t b;
+	int i;
+	b = 0;
+	for (i = 0; i < 8; i++) {
+		b += ((*p) > 0xFFFF808080808080) << i;
+		p += 1;
+	}
+	return b;
+}
+
 int
 main(void)
 {
-	long i;
+	size_t i, j;
 	size_t rowlen, drowlen;
 	uint32_t width, height;
-	uint16_t *row;
+	uint64_t *row;
 	uint8_t *drow;
 	ff_read_header(&width, &height);
-	row = ereallocarray(NULL, width, (sizeof("RGBA") - 1) * sizeof(uint16_t));
+	row = ereallocarray(NULL, width, sizeof(uint64_t));
 	drow = ereallocarray(NULL, width/8, sizeof(uint8_t));
-	rowlen = width * (sizeof("RGBA") - 1);
+	rowlen = width;
 	drowlen = width / 8;
 	for (i = 0; i < height; ++i) {
-		efread(row, sizeof(uint16_t), rowlen, stdin);
-		efwrite(drow, sizeof(uint16_t), drowlen, stdout); 
+		for (j = 0; j < rowlen; j++) row[j] = 0;
+		efread(row, sizeof(uint64_t), rowlen, stdin);
+		for (j = 0; j < drowlen; j++) {
+			drow[j] = getbyte(row + j * 8);
+		}
+		efwrite(drow, sizeof(uint8_t), drowlen, stdout); 
 	}
 	return fshut(stdout, "<stdout>");
 }
