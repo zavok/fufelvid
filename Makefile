@@ -19,12 +19,12 @@ ff2png-LDLIBS = $(PNG_LDLIBS)
 png2ff: png2ff.o $(REQ:=.o)
 ff2png: ff2png.o $(REQ:=.o)
 data2ff: data2ff.o
-ff2data: ff2data.o
+ff2data: ff2data.o $(REQ:=.o)
 
 png2ff.o: png2ff.c $(REQ:=.h)
 ff2png.o: ff2png.c $(REQ:=.h)
 data2ff.o: data2ff.c
-ff2data.o: ff.data.c
+ff2data.o: ff2data.c $(REQ:=.h)
 
 .o:
 	$(CC) -o $@ $(LDFLAGS) $< $(REQ:=.o) $($*-LDLIBS)
