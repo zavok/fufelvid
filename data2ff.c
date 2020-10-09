@@ -13,11 +13,12 @@ void
 setbyte(uint8_t b, uint64_t *p)
 {
 	int i;
+	uint8_t f;
 	const uint64_t alpha = 0xFFFF000000000000;
 	for (i = 0; i < 8; i++) {
-		*p = alpha | (0x0000FFFFFFFFFFFF * (b & 0x0001));
+		f = 1 && (b & (0x80 >> i));
+		*p = alpha | (0x0000FFFFFFFFFFFF * f);
 		p += 1;
-		b = b >> 1;
 	} 	
 }
 

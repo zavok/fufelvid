@@ -11,7 +11,7 @@ getbyte(uint64_t *p)
 	int i;
 	b = 0;
 	for (i = 0; i < 8; i++) {
-		b += ((*p) > 0xFFFF808080808080) << i;
+		b += ((*p) > 0xFFFF808080808080) << (7-i);
 		p += 1;
 	}
 	return b;

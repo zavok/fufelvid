@@ -1,15 +1,27 @@
 #!/bin/sh
 
+function usage() {
+	echo usage: ./encode.sh input output
+	exit
+}
+
+in="$1"
+out="$2"
+[ -z "$in" ]  && usage
+[ -z "$out" ] && usage
+
 wdir='fufelvid_frames'
-rawsize=518400 # 1920 * 1080 / 8 * 2 ????
+rawsize=259200 # 1920 * 1080 / 8
 
-rm -rf $wdir/*
 mkdir -p $wdir
+rm -f $wdir/*
 
-split -x -a 8 -b $rawsize - $wdir/frame.
+split --numeric-suffixes=1 -a 8 -b $rawsize "$in" $wdir/frame.
 
-for f in $wdir/frame*; do ./data2ff < $f | ./ff2png > $f.png; done
+for f in $wdir/frame.*; do ( echo $f >&2; ./data2ff < $f | ./ff2png > $f.png);
+done
 
-ffmpeg -i $wdir/frame.*.png -r 0.20 -c:v libx264rgb file.mp4
+echo $in $out
+ffmpeg -r 4 -i $wdir/frame.%08d.png -c:v libx264rgb "$out"
 
-
+rm -rf "$wdir"

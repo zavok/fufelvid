@@ -1,7 +1,25 @@
 Quick and dirty clone of fvid[1], with C and shell scripts.
 
-util.c util.h ff2png.c and png2ff.c are a part of farbfeld[2] distribution
+# Building
+
+$ make
+
+# Installation
+
+No.
+
+# Usage
+
+data2ff, ff2data - convert between data and farbfeld image, each black and white
+	pixel representing a single bit.
+ff2png, png2ff - convert between farbfeld image and png.
+encode.sh, decode.sh - convert between data and video.
+
+$ ./encode.sh input_data.file output_video.mp4
+$ ./decode.sh input_video.mp4 output_data.file
+
+
+util.c, util.h, ff2png.c and png2ff.c are originally from farbfeld[2] distribution.
 
 [1] https://github.com/AlfredoSequeida/fvid
 [2] http://tools.suckless.org/farbfeld/
-
