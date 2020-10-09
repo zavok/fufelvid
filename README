@@ -1,0 +1,7 @@
+Quick and dirty clone of fvid[1], with C and shell scripts.
+
+util.c util.h ff2png.c and png2ff.c are a part of farbfeld[2] distribution
+
+[1] https://github.com/AlfredoSequeida/fvid
+[2] http://tools.suckless.org/farbfeld/
+
