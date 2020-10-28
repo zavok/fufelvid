@@ -1,4 +1,5 @@
-Quick and dirty clone of fvid[1], with C and shell scripts.
+Quick and dirty clone of fvid[1], with C and shell scripts.  Not exactly
+compatible with it, though.
 
 # Building
 
@@ -10,16 +11,32 @@ No.
 
 # Usage
 
-data2ff, ff2data - convert between data and farbfeld image, each black and white
-	pixel representing a single bit.
+data2ff, ff2data - convert between data and farbfeld image, each black
+	and white pixel representing a single bit.
+
 ff2png, png2ff - convert between farbfeld image and png.
-encode.sh, decode.sh - convert between data and video.
+
+encode.sh, decode.sh - example scripts for converting between data
+and video:
 
 $ ./encode.sh input_data.file output_video.mp4
 $ ./decode.sh input_video.mp4 output_data.file
 
+It is advised to put your data into a tar archive before encoding.
+You can also compress or encrypt it as well, while you are at it.
 
-util.c, util.h, ff2png.c and png2ff.c are originally from farbfeld[2] distribution.
+# Troubleshooting
+
+During testing it was discovered that video compression might ruin
+encoded data at high framerates. Keep it reasonably low (fps=1 seems to
+work), or configure ffmpeg to encode losslessly.
+
+Video hosting sites might reencode videos and change their framerates.
+Make sure fps settings of ffmpeg match when encoding and decoding.
+
+util.c, util.h, ff2png.c and png2ff.c are originally from farbfeld[2]
+distribution.
 
 [1] https://github.com/AlfredoSequeida/fvid
 [2] http://tools.suckless.org/farbfeld/
+

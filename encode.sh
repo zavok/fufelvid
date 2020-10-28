@@ -15,13 +15,16 @@ rawsize=259200 # 1920 * 1080 / 8
 
 mkdir -p $wdir
 rm -f $wdir/*
-
 split --numeric-suffixes=1 -a 8 -b $rawsize "$in" $wdir/frame.
 
-for f in $wdir/frame.*; do ( echo $f >&2; ./data2ff < $f | ./ff2png > $f.png);
+for f in $wdir/frame.*
+do
+	(./data2ff < $f | ./ff2png > $f.png; echo $f >&2)&
 done
 
-echo $in $out
-ffmpeg -r 4 -i $wdir/frame.%08d.png -c:v libx264rgb "$out"
+wait
+
+ffmpeg -r 1 -i $wdir/frame.%08d.png -c:v libx264rgb "$out"
 
 rm -rf "$wdir"
+
